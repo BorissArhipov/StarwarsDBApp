@@ -4,6 +4,8 @@ import ErrorButton from '../error-button/error-button';
 
 import './item-details.css';
 
+import Spinner from '../spinner/spinner';
+
 const Record = ({ item, field, label }) => {
   return (
     <li className="list-group-item">
@@ -21,7 +23,8 @@ export default class ItemDetails extends Component {
 
   state = {
     item: null,
-    image: null
+    image: null,
+    loading: false
   };
 
   componentDidMount() {
@@ -33,6 +36,9 @@ export default class ItemDetails extends Component {
       this.props.getData !== prevProps.getData ||
       this.props.getImageUrl !== prevProps.getImageUrl) {
       this.updateItem();
+      this.setState({
+        loading: true
+      });
     }
   }
 
@@ -46,14 +52,20 @@ export default class ItemDetails extends Component {
       .then((item) => {
         this.setState({
           item,
-          image: getImageUrl(item)
+          image: getImageUrl(item),
+          loading: false
         });
       });
   }
 
   render() {
 
-    const { item, image } = this.state;
+    const { item, image, loading } = this.state;
+    
+    if (loading) {
+      return <Spinner/>;
+    }
+    
     if (!item) {
       return <span>Select a item from a list</span>;
     }
