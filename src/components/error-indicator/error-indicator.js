@@ -5,7 +5,7 @@ import './error-indicator.css';
 const ErrorIndicator = () => {
   return (
     <div className="error-indicator">
-      <img src='./death-star.png' alt="error icon"/>
+      <div className="error-img"></div>
       <span className="boom">BOOM!</span>
       <span>
         something has gone terribly wrong

@@ -1,9 +1,14 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-module.exports = (env = {mode: 'development'}) => {
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+module.exports = (env = {}) => {
 
     return {
         mode: 'development',
+        output: {
+            publicPath: '/'
+        },
         module: {
             rules: [
                 {
@@ -61,12 +66,37 @@ module.exports = (env = {mode: 'development'}) => {
                 template: 'public/index.html'
             }),
             new MiniCssExtractPlugin({
-                filename: 'main.css'
+                filename: 'main-[hash:8].css'
             })
         ],
 
         devServer: {
-            open: true
-        }
+            open: true,
+            historyApiFallback: true
+        },
+        optimization: {
+            runtimeChunk: 'single',
+            splitChunks: {
+                chunks: 'all',
+                maxInitialRequests: Infinity,
+                minSize: 0,
+                cacheGroups: {
+                    vendor: {
+                        test: /[\\/]node_modules[\\/]/,
+                        name(module) {
+
+                            const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+            
+                            return `npm.${packageName.replace('@', '')}`;
+                        },
+                    },
+                },
+            },
+            minimize: true,
+            minimizer: [
+                new CssMinimizerPlugin(),
+                new UglifyJsPlugin()
+            ],
+        },
     }
 };

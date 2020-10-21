@@ -13,3 +13,12 @@
 .error-indicator .boom {
   font-size: 1.7rem;
 }
+
+.error-img {
+  background-image: url('../../img/death-star.png');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  width: 64px;
+  height: 64px;
+}

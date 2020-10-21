@@ -50,11 +50,19 @@ export default class ItemDetails extends Component {
 
     getData(itemId)
       .then((item) => {
-        this.setState({
-          item,
-          image: getImageUrl(item),
-          loading: false
-        });
+        let img = require('../../img/none.jpg').default;
+        let getImg = getImageUrl(item);
+        getImg.then(res => {
+          if(res != 'none') {
+            img = res.url;
+          };
+          console.log(img);
+          this.setState({
+            item,
+            image: img,
+            loading: false
+          });
+        })
       });
   }
 
@@ -74,10 +82,7 @@ export default class ItemDetails extends Component {
 
     return (
       <div className="item-details card">
-        <img className="item-image"
-          src={image}
-          alt="item"/>
-
+        <div style={{backgroundImage: `url(${image})`}} className="item-image"></div>
         <div className="card-body">
           <h4>{name}</h4>
           <ul className="list-group list-group-flush">
