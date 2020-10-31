@@ -2,10 +2,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-module.exports = (env = {}) => {
+module.exports = (env = 'development') => {
 
     return {
-        mode: 'development',
+        mode: env,
         output: {
             publicPath: '/'
         },
